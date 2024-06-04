@@ -1,5 +1,4 @@
 import sys
-
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
     QApplication,
@@ -24,9 +23,7 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 
-
-# Subclass QMainWindow to customize your application's main window
-class MainWindow(QMainWindow):
+class GpaCalculator(QMainWindow):
     def __init__(self):
         super().__init__()
 
@@ -51,30 +48,37 @@ class MainWindow(QMainWindow):
             self.grades.append(grade_input)
             self.credits.append(credit_input)
 
+
         self.calculate_button = QPushButton("Calculate GPA")
         self.calculate_button.clicked.connect(self.calculate_gpa)
         layout.addWidget(self.calculate_button)
 
+
         self.gpa_label = QLabel("GPA:")
         layout.addWidget(self.gpa_label)
+
 
         widget = QWidget()
         widget.setLayout(layout)
 
-# Set the central widget of the Window. Widget will expand
+        # Set the central widget of the Window. Widget will expand
         # to take up all the space in the window by default.
         self.setCentralWidget(widget)
 
-        self.setFixedSize(1000, 600)
+
+        self.setFixedSize(700, 800)
+
 
     def calculate_gpa(self):
         quality_points = 0
         total_credits = 0
 
+
         for grade, credit in zip(self.grades, self.credits):
             if grade.text():
                 quality_points += self.grade_to_quality_points(grade.text()) * credit.value()
                 total_credits += credit.value()
+
 
         if total_credits == 0:
             self.gpa_label.setText("GPA: 0.0")
@@ -82,12 +86,15 @@ class MainWindow(QMainWindow):
             gpa = quality_points / total_credits
             self.gpa_label.setText(f"GPA: {round(gpa, 2)}")
 
+
     def grade_to_quality_points(self, grade):
         grade_dict = {"A": 4, "A-": 3.7, "B+": 3.3, "B": 3, "B-": 2.7, "C+": 2.3, "C": 2, "C-": 1.7, "D": 1, "F": 0}
         return grade_dict.get(grade.upper(), 0)
 
+       
+
 app = QApplication(sys.argv)
-window = MainWindow()
+window = GpaCalculator()
 window.show()
 
 app.exec()
